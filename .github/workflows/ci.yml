@@ -76,6 +76,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/valtchanv/${{ github.repository }}/weather-service:latest
+          tags: ghcr.io/valtchanv/action-test/weather-service:latest
 
 
