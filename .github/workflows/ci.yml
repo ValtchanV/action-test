@@ -76,6 +76,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: weather-service:latest
+          tags: ghcr.io/${{ github.repository }}/weather-service:latest
 
 
