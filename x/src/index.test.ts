@@ -54,7 +54,7 @@ describe('Weather REST Service', () => {
     it('Should test for collissions', () => {
       const a = 0;
       const b = 0;
-      const c = 0;
+      const c = 1;
       const d = 2;
 
       expect(a + b + c + d < 4).toBeTruthy();
