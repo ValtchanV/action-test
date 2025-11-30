@@ -44,6 +44,7 @@ Build the TypeScript code and create a Docker image:
 npm run build
 ```
 
+
 This will:
 1. Compile TypeScript to JavaScript
 2. Build a Docker image tagged as `weather-service:latest`
