@@ -1,39 +1,41 @@
-name: Node CI Pipeline
+name: NPM CI Pipeline
 
 on:
   workflow_call:
     inputs:
-      mode:
-        description: "serial or parallel"
-        required: false
-        type: string
-        default: "serial"
-
       node-version:
+        required: true
+        type: string
+
+      working-directory:
         required: false
         type: string
-        default: "22.x"
+        default: ""
 
-      run-lint:
+      lint-script:
         required: false
-        type: boolean
-        default: true
+        type: string
+        default: ""
 
-      run-test:
+      test-script:
         required: false
-        type: boolean
-        default: true
-
-      run-typecheck:
+        type: string
+        default: "test"
+  
+      typecheck-script:
         required: false
-        type: boolean
-        default: true  
+        type: string
+        default: ""
 
+      build-and-push:
+        required: false
+        type: string
+        default: ""
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    if: ${{ inputs.run-test }}
+    if: ${{ inputs.test-script }}
     
     steps:
       - name: Checkout code
@@ -44,17 +46,21 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           cache: 'npm'
+      
+      - name: Change working directory
+        if: ${{ inputs.working-directory }}
+        run: cd ${{ inputs.working-directory }}
       
       - name: Install dependencies
         run: npm ci
       
       - name: Run tests
-        run: npm test
+        run: npm run ${{ inputs.test-script }}
   
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    if: ${{ inputs.run-lint }}
+    if: ${{ inputs.lint-script }}
     
     steps:
       - name: Checkout code
@@ -66,15 +72,20 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: 'npm'
       
+      - name: Change working directory
+        if: ${{ inputs.working-directory }}
+        run: cd ${{ inputs.working-directory }}
+      
       - name: Install dependencies
         run: npm ci
       
       - name: Run linter
-        run: npm run lint
+        run: npm run ${{ inputs.lint-script }}
   
   docker-build-and-push:
     name: Docker Build and Push
     runs-on: ubuntu-latest
+    if: ${{ inputs.build-and-push }}
 
     permissions:
       contents: read
@@ -93,7 +104,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
+      
+      - name: Change working directory
+        if: ${{ inputs.working-directory }}
+        run: cd ${{ inputs.working-directory }}      
+  
       - name: Build and push
         uses: docker/build-push-action@v6
         with:

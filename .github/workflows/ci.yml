@@ -10,34 +10,11 @@ on:
 
 jobs:
   use-template:
-    uses: ./.github/workflows/node-ci.yml
+    uses: ./.github/workflows/npm-ci.yml
 
     permissions:
       contents: read
       packages: write
 
     with:
-      node-version: '22'
-      run-test: true
-
-
-  extra-tests:
-    name: Extra tests
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 20.x
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm test
-          
+      node-version: 22.x
