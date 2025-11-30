@@ -14,6 +14,7 @@ A simple Node.js REST service built with TypeScript that provides a weather endp
 
 ## Getting Started
 
+
 ### Prerequisites
 
 - Node.js (v20 or higher)
