@@ -11,6 +11,11 @@ on:
 jobs:
   use-template:
     uses: ./.github/workflows/node-ci.yml
+
+    permissions:
+      contents: read
+      packages: write
+
     with:
       node-version: '22'
       run-test: true
