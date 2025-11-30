@@ -41,15 +41,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       
+      - name: Change working directory
+        if: ${{ inputs.working-directory }}
+        run: cd ${{ inputs.working-directory }}
+      
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
           cache: 'npm'
-      
-      - name: Change working directory
-        if: ${{ inputs.working-directory }}
-        run: cd ${{ inputs.working-directory }}
       
       - name: Install dependencies
         run: npm ci
