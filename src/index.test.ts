@@ -49,5 +49,16 @@ describe('Weather REST Service', () => {
       expect(response.body).toHaveProperty('timestamp');
     });
   });
+
+  describe('Pipeline Conflict Test', () => {
+    it('Should test for collissions', () => {
+      const a = 1;
+      const b = 0;
+      const c = 0;
+      const d = 0;
+
+      expect(a + b + c + d < 4).toBeTruthy();
+    });
+  });
 });
 
