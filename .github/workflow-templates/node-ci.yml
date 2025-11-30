@@ -27,7 +27,7 @@ on:
       run-typecheck:
         required: false
         type: boolean
-        default: false  
+        default: true  
 
 jobs:
   test:
