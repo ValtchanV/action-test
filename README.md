@@ -26,6 +26,8 @@ A simple Node.js REST service built with TypeScript that provides a weather endp
 npm install
 ```
 
+
+
 ### Development
 
 Run the service in development mode with hot reload:
