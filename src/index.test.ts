@@ -53,7 +53,7 @@ describe('Weather REST Service', () => {
   describe('Pipeline Conflict Test', () => {
     it('Should test for collissions', () => {
       const a = 1;
-      const b = 0;
+      const b = 2;
       const c = 0;
       const d = 0;
 
