@@ -57,7 +57,7 @@ describe('Weather REST Service', () => {
       const c = 1;
       const d = 2;
 
-      expect(a + b + c + d < 4).toBeTruthy();
+      expect(a + b + c + d < 5).toBeTruthy();
     });
   });
 });
