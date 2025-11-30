@@ -10,7 +10,7 @@ on:
 
 jobs:
   use-template:
-    uses: ./.github/workflow-templates/node-ci.yml
+    uses: ./.github/workflows/node-ci.yml@main
     with:
       node-version: '22'
       run-test: true
