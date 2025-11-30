@@ -10,7 +10,7 @@ on:
       working-directory:
         required: false
         type: string
-        default: ""
+        default: "."
 
       lint-script:
         required: false
@@ -36,20 +36,20 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     if: ${{ inputs.test-script }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
-      - name: Change working directory
-        if: ${{ inputs.working-directory }}
-        run: cd ${{ inputs.working-directory }}
       
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
           cache: 'npm'
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
       
       - name: Install dependencies
         run: npm ci
@@ -61,6 +61,9 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     if: ${{ inputs.lint-script }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     
     steps:
       - name: Checkout code
@@ -71,10 +74,7 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           cache: 'npm'
-      
-      - name: Change working directory
-        if: ${{ inputs.working-directory }}
-        run: cd ${{ inputs.working-directory }}
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
       
       - name: Install dependencies
         run: npm ci
@@ -86,6 +86,9 @@ jobs:
     name: Docker Build and Push
     runs-on: ubuntu-latest
     if: ${{ inputs.build-and-push }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
 
     permissions:
       contents: read
@@ -103,11 +106,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Change working directory
-        if: ${{ inputs.working-directory }}
-        run: cd ${{ inputs.working-directory }}      
+          password: ${{ secrets.GITHUB_TOKEN }}      
   
       - name: Build and push
         uses: docker/build-push-action@v6
