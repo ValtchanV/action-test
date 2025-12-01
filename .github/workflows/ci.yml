@@ -15,5 +15,8 @@ jobs:
     with:
       working-directory: x
       node-version: 22.x
+      test-script: test
       integration-test-script: "integration-tests"
       integration-test-sql-files: "schema.sql, schema2.sql"
+      setup-script: setup
+      lint-script: lint

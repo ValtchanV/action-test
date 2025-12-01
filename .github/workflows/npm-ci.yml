@@ -25,7 +25,7 @@ on:
       test-script:
         required: false
         type: string
-        default: "test"
+        default: ""
   
       typecheck-script:
         required: false
