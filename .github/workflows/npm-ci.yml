@@ -31,6 +31,37 @@ on:
         required: false
         type: string
         default: ""
+
+      integration-test-script:
+        required: false
+        type: string
+        default: ""
+
+      integration-test-mysql-port:
+        required: false
+        type: string
+        default: "3306"
+
+      integration-test-mysql-db:
+        required: false
+        type: string
+        default: "testdb"
+
+      integration-test-mysql-user:
+        required: false
+        type: string
+        default: "testuser"
+  
+      integration-test-mysql-password:
+        required: false
+        type: string
+        default: "testpass"
+
+      integration-test-sql-files:
+        required: false
+        type: string
+        default: "schema.sql"
+
 jobs:
   test:
     name: Test
@@ -119,6 +150,10 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    if: ${{ inputs.integration-test-script }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
 
     services:
       mysql:
@@ -144,10 +179,6 @@ jobs:
       DB_USER: testuser
       DB_PASSWORD: testpass
 
-    defaults:
-      run:
-        working-directory: ${{ inputs.working-directory }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -164,7 +195,12 @@ jobs:
       
       - name: Run DB migrations
         run: |
-          mysql -h 127.0.0.1 -P 3306 -utestuser -ptestpass testdb < schema.sql
+          IFS=',' read -ra SQL_FILES <<< "${{ inputs.integration-test-sql-files }}"
+          for sql_file in "${SQL_FILES[@]}"; do
+            sql_file=$(echo "$sql_file" | xargs)  # Trim whitespace
+            echo "Running migration: $sql_file"
+            mysql -h 127.0.0.1 -P 3306 -utestuser -ptestpass testdb < "$sql_file"
+          done
 
       - name: Run integration tests
-        run: npm run integration-tests
+        run: npm run ${{ inputs.integration-test-script }}
