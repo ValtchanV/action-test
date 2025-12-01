@@ -12,6 +12,11 @@ on:
         type: string
         default: "."
 
+      setup-script:
+        required: false
+        type: string
+        default: ""
+  
       lint-script:
         required: false
         type: string
@@ -85,6 +90,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Run setup script
+        if: ${{ inputs.setup-script }}
+        run: npm run ${{ inputs.setup-script }}
+      
       - name: Run tests
         run: npm run ${{ inputs.test-script }}
   
@@ -109,6 +118,10 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+      
+      - name: Run setup script
+        if: ${{ inputs.setup-script }}
+        run: npm run ${{ inputs.setup-script }}
       
       - name: Run linter
         run: npm run ${{ inputs.lint-script }}
@@ -192,6 +205,10 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+
+      - name: Run setup script
+        if: ${{ inputs.setup-script }}
+        run: npm run ${{ inputs.setup-script }}
       
       - name: Run DB migrations
         run: |
