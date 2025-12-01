@@ -16,4 +16,4 @@ jobs:
       working-directory: x
       node-version: 22.x
       integration-test-script: "integration-tests"
-      integration-test-sql-files: "schema.sql"
+      integration-test-sql-files: "schema.sql, schema2.sql"
